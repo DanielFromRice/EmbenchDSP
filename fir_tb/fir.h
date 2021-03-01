@@ -29,7 +29,6 @@
  * 
  * 
 */
-
 void fir(float* output_array_ptr, float* fir_coefs, int filter_length, int data_amt);
 
 int check_if_equal(float* test_data, float* check_data, int data_length, float epsilon);
