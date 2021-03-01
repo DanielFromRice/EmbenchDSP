@@ -24,7 +24,7 @@
 
 
 #include <stdio.h>
-#include <string.h>
+// #include <string.h>
 
 #include "fir.h"
 
@@ -35,7 +35,7 @@ void fir(float* output_array_ptr, float* fir_coefs, int filter_length, int data_
 
 int check_if_equal(float* test_data, float* check_data, int data_length, float epsilon);
 
-void print_array(float* arr_in, int size);
+void print_array(float* arr_in, int size, float epsilon);
 
 int main()
 {
@@ -82,9 +82,9 @@ float true_res[] = {2.1804394561215686e-06, 7.307213539159978e-06, -3.8274499531
 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 0.0, 0.0, 0.0};
 
-print_array(res, DATA_LENGTH);
-
 float epsilon = 2e-6;
+print_array(res, DATA_LENGTH, epsilon);
+
 int pass = check_if_equal(res, true_res, DATA_LENGTH, epsilon);
 
 if (pass){
@@ -94,6 +94,7 @@ else{
     printf("Test failed :(\n");
 }
 
+// printf("Size of output = %lu\n", sizeof(res)/sizeof(float));
 
 // initializing data (development purposes)
 // float data[DATA_SIZE] = { 0.0 };
@@ -140,10 +141,10 @@ void fir(float* output_array_ptr, float* fir_coefs, int filter_length, int data_
     for (int i = filter_length; i < data_amt; i++) {
         float sum = 0.0;
         for (int j = 0; j < filter_length; j++) {
-            // if (i >= )
             sum += fir_coefs[j] * padded_in[i - j];
+            // printf("fir_coef = %e, padded_in = %f, sum = %e\n", fir_coefs[j], padded_in[i-j], sum);
         }
-        output_array_ptr[i-filter_length] = sum;
+        output_array_ptr[i - filter_length] = sum;
     }
 }
 
@@ -157,10 +158,16 @@ int check_if_equal(float* test_data, float* check_data, int data_length, float e
     return match;    
 }
 
-void print_array(float* arr_in, int size)
+
+void print_array(float* arr_in, int size, float epsilon)
 {
     printf("{");
     for (int i = 0; i < size; i++) {
+        // finding indices of nonzero entries in the printed (result) data, with intent of debugging
+        // if (arr_in[i] > epsilon || arr_in[i] < -epsilon){
+        //     printf("index = %d\n", i);
+        // }
+        
         if (i == (size-1)){
             printf("%e", *arr_in);
         }
