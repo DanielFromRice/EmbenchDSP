@@ -17,7 +17,7 @@
 
 */
 
-// #ifndef FIR_H
+#ifndef FIR_H
 #define FIR_H
 
 /*
@@ -34,4 +34,4 @@ void fir(float* output_array_ptr, float* fir_coefs, int filter_length, int data_
 
 int check_if_equal(float* test_data, float* check_data, int data_length, float epsilon);
 
-// #endif
+#endif
